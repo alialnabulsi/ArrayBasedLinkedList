@@ -1,1 +1,10 @@
+# CLion/IDE files
 .idea/
+*.iml
+
+# Build directories
+cmake-build-*/
+build/
+
+# System files
+.DS_Store
