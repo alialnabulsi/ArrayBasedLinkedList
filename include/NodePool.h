@@ -23,6 +23,8 @@ public:
     NodePool();
     int newNode();
     void deleteNode(int index);
+    NodeType* getPool() const;
+    int getFree() const;
 
 private:
     NodeType<T> arrNode[NUM_NODES];
@@ -57,10 +59,10 @@ int NodePool<ElementType>::newNode(){
     return index;
   }
 
-template<typename ElementType>
+/*template<typename ElementType>
 void NodePool<ElementType>::deleteNode(){
 
-}
+}*/
 
 template<typename ElementType>
 void NodePool<ElementType>::deleteNode(int index) {
@@ -68,6 +70,15 @@ void NodePool<ElementType>::deleteNode(int index) {
         cerr << ("NodePool: deleteNode index out of range");
     pool[index].next = free;
     free = index;
+}
+template<typename ElementType>
+NodeType* NodePool<ElementType>::getPool() const{
+    return pool;
+}
+
+template<typename ElementType>
+int NodePool<ElementType>::getFree() const{
+    return free;
 }
 
 
