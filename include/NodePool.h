@@ -1,3 +1,8 @@
+#ifndef NODEPOOL_H
+#define NODEPOOL_H
+
+#include <iostream>
+using namespace std;
 /*-- NodePool.h ------------------------------------------------------------
 This header file defines a NodePool class template for managing an array-based
 storage pool of nodes used in linked list implementation. The type parameter T
@@ -24,12 +29,6 @@ NUM_NODES: Fixed size of the storage pool (2048 nodes)
 Note: The pool automatically initializes all nodes in a linked free list
 upon construction.
 --------------------------------------------------------------------------*/
-#ifndef NODEPOOL_H
-#define NODEPOOL_H
-
-#include <iostream>
-using namespace std;
-
 const int NULL_VALUE = -1;
 const int NUM_NODES = 2048;
 
@@ -67,9 +66,16 @@ public:
     Postcondition: The node at index is added to beginning of free list.
     If index is invalid, outputs error message.
     -----------------------------------------------------------------------*/
-    NodeType<T>* getPool() const;
+    NodeType<T>* getPool() ;
     /*-----------------------------------------------------------------------
     Provides access to the node array.
+
+    Precondition: None.
+    Postcondition: Returns pointer to the node array.
+    -----------------------------------------------------------------------*/
+    const NodeType<T>* readPool() const;
+    /*-----------------------------------------------------------------------
+    Read Only for the node array.
 
     Precondition: None.
     Postcondition: Returns pointer to the node array.
@@ -106,6 +112,7 @@ template<typename T>
 int NodePool<T>::newNode() {
     if(free == NULL_VALUE) {
         cerr << "No available space in the list";
+        return NULL_VALUE;
     }
     int index = free;
     free = arrNode[free].next;
@@ -122,9 +129,15 @@ void NodePool<T>::deleteNode(int index) {
 }
 
 template<typename T>
-NodeType<T>* NodePool<T>::getPool() const {
+NodeType<T>* NodePool<T>::getPool() {
     return arrNode;
 }
+
+template<typename T>
+const NodeType<T>* NodePool<T>::readPool() const {
+    return arrNode;
+}
+
 
 template<typename T>
 int NodePool<T>::getFree() const {

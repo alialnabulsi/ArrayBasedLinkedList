@@ -1,4 +1,11 @@
-List.h Documentation
+
+#ifndef LIST_H
+#define LIST_H
+
+#include <iostream>
+#include <functional>
+#include "NodePool.h"
+using namespace std;
 /*-- List.h ----------------------------------------------------------------
 This header file defines a List class template implementing an array-based
 linked list using the NodePool for memory management. The type parameter T
@@ -28,14 +35,6 @@ getFree: Provides access to free list head (for debugging)
 Note: All operations maintain proper linkage through the NodePool and
 handle edge cases (empty list, full pool, etc.) appropriately.
 --------------------------------------------------------------------------*/
-#ifndef LIST_H
-#define LIST_H
-
-#include <iostream>
-#include <functional>
-#include "NodePool.h"
-using namespace std;
-
 template<typename T>
 class List {
 public:
@@ -235,7 +234,7 @@ int List<T>::size() const {
     int count = 0, ptr = first;
     while(ptr != NULL_VALUE) {
         count++;
-        ptr = pool.getPool()[ptr].next;
+        ptr = pool.readPool()[ptr].next;
     }
     return count;
 }
@@ -244,10 +243,10 @@ template<typename T>
 int List<T>::search(const T& item) const {
     int pos = NULL_VALUE, ptr = first;
     while(ptr != NULL_VALUE) {
-        if (pool.getPool()[ptr].data == item) {
+        if (pool.readPool()[ptr].data == item) {
             pos = ptr;
         }
-        ptr = pool.getPool()[ptr].next;
+        ptr = pool.readPool()[ptr].next;
     }
     return pos;
 }
@@ -353,19 +352,19 @@ void List<T>::sortList() {
 
 template<typename T>
 bool List<T>::isSorted() const {
-    if (isEmpty() || pool.getPool()[first].next == NULL_VALUE) {
+    if (isEmpty() || pool.readPool()[first].next == NULL_VALUE) {
         return true;
     }
 
     int curr = first;
-    int next = pool.getPool()[curr].next;
+    int next = pool.readPool()[curr].next;
 
     while (next != NULL_VALUE) {
-        if (pool.getPool()[curr].data > pool.getPool()[next].data) {
+        if (pool.readPool()[curr].data > pool.readPool()[next].data) {
             return false;
         }
         curr = next;
-        next = pool.getPool()[next].next;
+        next = pool.readPool()[next].next;
     }
     return true;
 }
@@ -375,8 +374,8 @@ void List<T>::display() const {
     int ptr = first;
     cout << "List: [";
     while (ptr != NULL_VALUE) {
-        cout << pool.getPool()[ptr].data;
-        ptr = pool.getPool()[ptr].next;
+        cout << pool.readPool()[ptr].data;
+        ptr = pool.readPool()[ptr].next;
         if (ptr != NULL_VALUE) {
             cout << ", ";
         }
