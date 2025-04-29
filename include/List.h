@@ -1,3 +1,33 @@
+List.h Documentation
+/*-- List.h ----------------------------------------------------------------
+This header file defines a List class template implementing an array-based
+linked list using the NodePool for memory management. The type parameter T
+represents the data type stored in the list.
+
+Key Features:
+
+Complete linked list implementation without dynamic memory operations
+
+Uses NodePool for efficient node management
+
+Supports standard list operations and traversal
+
+Basic Operations:
+Construction: Default, copy constructor, and assignment operator
+Insertion: At top, at end, or after specified position
+Deletion: At top, at end, or by item value
+Search: Locates an item in the list
+Traversal: Applies a function to each element
+Sorting: In-place bubble sort implementation
+Utilities: Size check, empty check, display
+
+Advanced Operations:
+isSorted: Checks if list is in ascending order
+getFree: Provides access to free list head (for debugging)
+
+Note: All operations maintain proper linkage through the NodePool and
+handle edge cases (empty list, full pool, etc.) appropriately.
+--------------------------------------------------------------------------*/
 #ifndef LIST_H
 #define LIST_H
 
@@ -10,23 +40,128 @@ template<typename T>
 class List {
 public:
     List();
+/*-----------------------------------------------------------------------
+Constructs an empty List object.
+
+Precondition: None.
+Postcondition: An empty list is created with first set to NULL_VALUE.
+-----------------------------------------------------------------------*/
     List(const List& other);
+/*-----------------------------------------------------------------------
+Copy constructor.
+
+Precondition: None.
+Postcondition: Creates a deep copy of other list with identical contents.
+-----------------------------------------------------------------------*/
     List& operator=(const List& other);
+/*-----------------------------------------------------------------------
+Assignment operator.
+
+Precondition: None.
+Postcondition: Performs deep copy of other list. Returns reference to
+this list. Handles self-assignment properly.
+-----------------------------------------------------------------------*/
     ~List();
+/*-----------------------------------------------------------------------
+Destructor.
+
+Precondition: None.
+Postcondition: All nodes are returned to the pool.
+-----------------------------------------------------------------------*/
     bool isEmpty() const;
-    void traverse(const function<void(const T&)>& visit) const;
+/*-----------------------------------------------------------------------
+Checks if list is empty.
+
+Precondition: None.
+Postcondition: Returns true if list is empty, false otherwise.
+-----------------------------------------------------------------------*/
     int size() const;
+/*-----------------------------------------------------------------------
+Gets the size of the list.
+
+Precondition: None.
+Postcondition: Returns number of elements in the list.
+-----------------------------------------------------------------------*/
     int search(const T& item) const;
+/*-----------------------------------------------------------------------
+Searches for an item in the list.
+
+Precondition: None.
+Postcondition: Returns index of item if found, NULL_VALUE otherwise.
+-----------------------------------------------------------------------*/
     void insertAtEnd(const T& item);
+/*-----------------------------------------------------------------------
+Inserts an item at the end of the list.
+
+Precondition: None.
+Postcondition: Item is added as last element. If list was empty,
+becomes first element.
+-----------------------------------------------------------------------*/
     void deleteAtEnd();
+/*-----------------------------------------------------------------------
+Deletes the last item in the list.
+
+Precondition: List must not be empty.
+Postcondition: Last element is removed from list and returned to pool.
+-----------------------------------------------------------------------*/
     void insertAtTop(const T& item);
+/*-----------------------------------------------------------------------
+Inserts an item at the beginning of the list.
+
+Precondition: None.
+Postcondition: Item is added as first element.
+-----------------------------------------------------------------------*/
     void deleteAtTop();
+/*-----------------------------------------------------------------------
+Deletes the first item in the list.
+
+Precondition: List must not be empty.
+Postcondition: First element is removed from list and returned to pool.
+-----------------------------------------------------------------------*/
     void insertAfterPos(int pos, const T& item);
+/*-----------------------------------------------------------------------
+Inserts an item after a specified position.
+
+Precondition: pos must be a valid position in the list.
+Postcondition: Item is inserted after specified position.
+If position is invalid, outputs error message.
+-----------------------------------------------------------------------*/
     bool deleteItem(const T& item);
+/*-----------------------------------------------------------------------
+Deletes the first occurrence of an item.
+
+Precondition: None.
+Postcondition: Returns true if item was found and deleted, false otherwise.
+-----------------------------------------------------------------------*/
     int getFree() const;
+/*-----------------------------------------------------------------------
+Gets the current free list head from the pool.
+
+Precondition: None.
+Postcondition: Returns index of first free node (for debugging purposes).
+-----------------------------------------------------------------------*/
     void sortList();
+/*-----------------------------------------------------------------------
+Sorts the list in ascending order.
+
+Precondition: None.
+Postcondition: List elements are sorted using bubble sort algorithm.
+-----------------------------------------------------------------------*/
     bool isSorted() const;
+/*-----------------------------------------------------------------------
+Checks if the list is sorted.
+
+Precondition: None.
+Postcondition: Returns true if list is in ascending order, false otherwise.
+-----------------------------------------------------------------------*/
     void display() const;
+/*-----------------------------------------------------------------------
+Displays the list contents.
+
+Precondition: None.
+Postcondition: List contents are output to standard output in format:
+"List: [item1, item2, ...]"
+-----------------------------------------------------------------------*/
 
 private:
     NodePool<T> pool;
@@ -191,15 +326,6 @@ bool List<T>::deleteItem(const T& item) {
         curr = pool.getPool()[curr].next;
     }
     return false;
-}
-
-template<typename T>
-void List<T>::traverse(const function<void(const T&)>& visit) const {
-    int ptr = first;
-    while (ptr != NULL_VALUE) {
-        visit(pool.getPool()[ptr].data);
-        ptr = pool.getPool()[ptr].next;
-    }
 }
 
 template<typename T>

@@ -1,3 +1,29 @@
+/*-- NodePool.h ------------------------------------------------------------
+This header file defines a NodePool class template for managing an array-based
+storage pool of nodes used in linked list implementation. The type parameter T
+represents the data type stored in each node.
+
+Key Features:
+
+Eliminates dynamic memory operations by using a fixed-size array
+
+Maintains a free list of available nodes
+
+Provides efficient node allocation and deallocation
+
+Basic Operations:
+newNode: Allocates a node from the free list
+deleteNode: Returns a node to the free list
+getPool: Provides access to the node array
+getFree: Returns the head of the free list
+
+Constants:
+NULL_VALUE: Special value (-1) representing null/nonexistent nodes
+NUM_NODES: Fixed size of the storage pool (2048 nodes)
+
+Note: The pool automatically initializes all nodes in a linked free list
+upon construction.
+--------------------------------------------------------------------------*/
 #ifndef NODEPOOL_H
 #define NODEPOOL_H
 
@@ -17,17 +43,51 @@ template<typename T>
 class NodePool {
 public:
     NodePool();
+    /*-----------------------------------------------------------------------
+    Constructs a NodePool object.
+
+    Precondition: None.
+    Postcondition: The node pool is initialized with all nodes linked in
+    a free list, and free points to the first node (0).
+    -----------------------------------------------------------------------*/
     int newNode();
+    /*-----------------------------------------------------------------------
+    Allocates a node from the free list.
+
+    Precondition: There should be available nodes in the pool.
+    Postcondition: Returns index of allocated node, which is removed from
+    free list. The node's next is set to NULL_VALUE.
+    If no nodes available, outputs error message.
+    -----------------------------------------------------------------------*/
     void deleteNode(int index);
+    /*-----------------------------------------------------------------------
+    Returns a node to the free list.
+
+    Precondition: index must be valid (0 <= index < NUM_NODES).
+    Postcondition: The node at index is added to beginning of free list.
+    If index is invalid, outputs error message.
+    -----------------------------------------------------------------------*/
     NodeType<T>* getPool() const;
+    /*-----------------------------------------------------------------------
+    Provides access to the node array.
+
+    Precondition: None.
+    Postcondition: Returns pointer to the node array.
+    -----------------------------------------------------------------------*/
     int getFree() const;
+    /*-----------------------------------------------------------------------
+    Gets the current free list head.
+
+    Precondition: None.
+    Postcondition: Returns index of first free node (NULL_VALUE if empty).
+    -----------------------------------------------------------------------*/
 
 private:
     NodeType<T> arrNode[NUM_NODES];
     int free;
     void initializePool();
 };
-
+//implementation
 template<typename T>
 NodePool<T>::NodePool() {
     initializePool();
