@@ -19,7 +19,8 @@ Provides efficient node allocation and deallocation
 Basic Operations:
 newNode: Allocates a node from the free list
 deleteNode: Returns a node to the free list
-getPool: Provides access to the node array
+getPool: Provides access(read only) to the node array
+readPool: Provides access to the node array
 getFree: Returns the head of the free list
 
 Constants:
@@ -37,7 +38,6 @@ struct NodeType {
     T data;
     int next;
 };
-
 template<typename T>
 class NodePool {
 public:

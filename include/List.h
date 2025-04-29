@@ -3,7 +3,6 @@
 #define LIST_H
 
 #include <iostream>
-#include <functional>
 #include "NodePool.h"
 using namespace std;
 /*-- List.h ----------------------------------------------------------------
@@ -253,14 +252,18 @@ int List<T>::search(const T& item) const {
 
 template<typename T>
 void List<T>::insertAtEnd(const T& item) {
-    int ptr = first;
-    int newNodeIndex;
-    while(ptr != NULL_VALUE) {
-        if(pool.getPool()[ptr].next == NULL_VALUE) {
-            newNodeIndex = pool.newNode();
-            pool.getPool()[newNodeIndex].data = item;
+    int newNodeIndex = pool.newNode();
+    pool.getPool()[newNodeIndex].data = item;
+    pool.getPool()[newNodeIndex].next = NULL_VALUE;
+
+    if (isEmpty()) {
+        first = newNodeIndex;
+    } else {
+        int ptr = first;
+        while (pool.getPool()[ptr].next != NULL_VALUE) {
+            ptr = pool.getPool()[ptr].next;
         }
-        ptr = pool.getPool()[ptr].next;
+        pool.getPool()[ptr].next = newNodeIndex;
     }
 }
 
