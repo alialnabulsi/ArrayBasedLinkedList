@@ -1,4 +1,3 @@
-
 #ifndef LIST_H
 #define LIST_H
 
@@ -19,13 +18,23 @@ Uses NodePool for efficient node management
 Supports standard list operations and traversal
 
 Basic Operations:
-Construction: Default, copy constructor, and assignment operator
-Insertion: At top, at end, or after specified position
-Deletion: At top, at end, or by item value
-Search: Locates an item in the list
-Traversal: Applies a function to each element
-Sorting: In-place bubble sort implementation
-Utilities: Size check, empty check, display
+List() - Constructs an empty List object
+List(const List&) - Copy constructor (deep copy)
+operator=(const List&) - Assignment operator (deep copy)
+~List() - Destructor (returns all nodes to pool)
+isEmpty() - Checks if list is empty
+size() - Returns number of elements in list
+search(const T&) - Locates first occurrence of an item
+insertAtEnd(const T&) - Inserts item at list end
+deleteAtEnd() - Removes last item from list
+insertAtTop(const T&) - Inserts item at list beginning
+deleteAtTop() - Removes first item from list
+insertAfterItem(const T&, const T&) - Inserts new item after existing item
+deleteItem(const T&) - Deletes first occurrence of specified item
+sortList() - Sorts list in ascending order (bubble sort)
+isSorted() - Checks if list is sorted
+display() - Outputs list contents to standard output
+getFree() - Returns free list head index (debugging)
 
 Advanced Operations:
 isSorted: Checks if list is in ascending order
@@ -38,128 +47,145 @@ template<typename T>
 class List {
 public:
     List();
-/*-----------------------------------------------------------------------
-Constructs an empty List object.
 
-Precondition: None.
-Postcondition: An empty list is created with first set to NULL_VALUE.
------------------------------------------------------------------------*/
-    List(const List& other);
-/*-----------------------------------------------------------------------
-Copy constructor.
+    /*-----------------------------------------------------------------------
+    Constructs an empty List object.
+    
+    Precondition: None.
+    Postcondition: An empty list is created with first set to NULL_VALUE.
+    -----------------------------------------------------------------------*/
+    List(const List &other);
 
-Precondition: None.
-Postcondition: Creates a deep copy of other list with identical contents.
------------------------------------------------------------------------*/
-    List& operator=(const List& other);
-/*-----------------------------------------------------------------------
-Assignment operator.
+    /*-----------------------------------------------------------------------
+    Copy constructor.
+    
+    Precondition: None.
+    Postcondition: Creates a deep copy of other list with identical contents.
+    -----------------------------------------------------------------------*/
+    List &operator=(const List &other);
 
-Precondition: None.
-Postcondition: Performs deep copy of other list. Returns reference to
-this list. Handles self-assignment properly.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Assignment operator.
+    
+    Precondition: None.
+    Postcondition: Performs deep copy of other list. Returns reference to
+    this list. Handles self-assignment properly.
+    -----------------------------------------------------------------------*/
     ~List();
-/*-----------------------------------------------------------------------
-Destructor.
 
-Precondition: None.
-Postcondition: All nodes are returned to the pool.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Destructor.
+    
+    Precondition: None.
+    Postcondition: All nodes are returned to the pool.
+    -----------------------------------------------------------------------*/
     bool isEmpty() const;
-/*-----------------------------------------------------------------------
-Checks if list is empty.
 
-Precondition: None.
-Postcondition: Returns true if list is empty, false otherwise.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Checks if list is empty.
+    
+    Precondition: None.
+    Postcondition: Returns true if list is empty, false otherwise.
+    -----------------------------------------------------------------------*/
     int size() const;
-/*-----------------------------------------------------------------------
-Gets the size of the list.
 
-Precondition: None.
-Postcondition: Returns number of elements in the list.
------------------------------------------------------------------------*/
-    int search(const T& item) const;
-/*-----------------------------------------------------------------------
-Searches for an item in the list.
+    /*-----------------------------------------------------------------------
+    Gets the size of the list.
+    
+    Precondition: None.
+    Postcondition: Returns number of elements in the list.
+    -----------------------------------------------------------------------*/
+    int search(const T &item) const;
 
-Precondition: None.
-Postcondition: Returns index of item if found, NULL_VALUE otherwise.
------------------------------------------------------------------------*/
-    void insertAtEnd(const T& item);
-/*-----------------------------------------------------------------------
-Inserts an item at the end of the list.
+    /*-----------------------------------------------------------------------
+    Searches for an item in the list.
+    
+    Precondition: None.
+    Postcondition: Returns index of item if found, NULL_VALUE otherwise.
+    -----------------------------------------------------------------------*/
+    void insertAtEnd(const T &item);
 
-Precondition: None.
-Postcondition: Item is added as last element. If list was empty,
-becomes first element.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Inserts an item at the end of the list.
+    
+    Precondition: None.
+    Postcondition: Item is added as last element. If list was empty,
+    becomes first element.
+    -----------------------------------------------------------------------*/
     void deleteAtEnd();
-/*-----------------------------------------------------------------------
-Deletes the last item in the list.
 
-Precondition: List must not be empty.
-Postcondition: Last element is removed from list and returned to pool.
------------------------------------------------------------------------*/
-    void insertAtTop(const T& item);
-/*-----------------------------------------------------------------------
-Inserts an item at the beginning of the list.
+    /*-----------------------------------------------------------------------
+    Deletes the last item in the list.
+    
+    Precondition: List must not be empty.
+    Postcondition: Last element is removed from list and returned to pool.
+    -----------------------------------------------------------------------*/
+    void insertAtTop(const T &item);
 
-Precondition: None.
-Postcondition: Item is added as first element.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Inserts an item at the beginning of the list.
+    
+    Precondition: None.
+    Postcondition: Item is added as first element.
+    -----------------------------------------------------------------------*/
     void deleteAtTop();
-/*-----------------------------------------------------------------------
-Deletes the first item in the list.
 
-Precondition: List must not be empty.
-Postcondition: First element is removed from list and returned to pool.
------------------------------------------------------------------------*/
-    void insertAfterPos(int pos, const T& item);
-/*-----------------------------------------------------------------------
-Inserts an item after a specified position.
+    /*-----------------------------------------------------------------------
+    Deletes the first item in the list.
+    
+    Precondition: List must not be empty.
+    Postcondition: First element is removed from list and returned to pool.
+    -----------------------------------------------------------------------*/
+    void insertAfterItem(const T &afterItem, const T &newItem);
 
-Precondition: pos must be a valid position in the list.
-Postcondition: Item is inserted after specified position.
-If position is invalid, outputs error message.
------------------------------------------------------------------------*/
-    bool deleteItem(const T& item);
-/*-----------------------------------------------------------------------
-Deletes the first occurrence of an item.
+    /*-----------------------------------------------------------------------
+Inserts an item after a specified item.
 
-Precondition: None.
-Postcondition: Returns true if item was found and deleted, false otherwise.
+Precondition: item must exist in the list.
+Postcondition: Item is inserted after specified item.
+If item doesn't exists, outputs error message.
 -----------------------------------------------------------------------*/
+    bool deleteItem(const T &item);
+
+    /*-----------------------------------------------------------------------
+    Deletes the first occurrence of an item.
+    
+    Precondition: None.
+    Postcondition: Returns true if item was found and deleted, false otherwise.
+    -----------------------------------------------------------------------*/
     int getFree() const;
-/*-----------------------------------------------------------------------
-Gets the current free list head from the pool.
 
-Precondition: None.
-Postcondition: Returns index of first free node (for debugging purposes).
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Gets the current free list head from the pool.
+    
+    Precondition: None.
+    Postcondition: Returns index of first free node (for debugging purposes).
+    -----------------------------------------------------------------------*/
     void sortList();
-/*-----------------------------------------------------------------------
-Sorts the list in ascending order.
 
-Precondition: None.
-Postcondition: List elements are sorted using bubble sort algorithm.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Sorts the list in ascending order.
+    
+    Precondition: None.
+    Postcondition: List elements are sorted using bubble sort algorithm.
+    -----------------------------------------------------------------------*/
     bool isSorted() const;
-/*-----------------------------------------------------------------------
-Checks if the list is sorted.
 
-Precondition: None.
-Postcondition: Returns true if list is in ascending order, false otherwise.
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Checks if the list is sorted.
+    
+    Precondition: None.
+    Postcondition: Returns true if list is in ascending order, false otherwise.
+    -----------------------------------------------------------------------*/
     void display() const;
-/*-----------------------------------------------------------------------
-Displays the list contents.
 
-Precondition: None.
-Postcondition: List contents are output to standard output in format:
-"List: [item1, item2, ...]"
------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------
+    Displays the list contents.
+    
+    Precondition: None.
+    Postcondition: List contents are output to standard output in format:
+    "List: [item1, item2, ...]"
+    -----------------------------------------------------------------------*/
 
 private:
     NodePool<T> pool;
@@ -167,10 +193,11 @@ private:
 };
 
 template<typename T>
-List<T>::List() : pool(), first(NULL_VALUE) {}
+List<T>::List() : pool(), first(NULL_VALUE) {
+}
 
 template<typename T>
-List<T>::List(const List& other) : pool(), first(NULL_VALUE) {
+List<T>::List(const List &other) : pool(), first(NULL_VALUE) {
     int otherPtr = other.first;
     int lastNewNode = NULL_VALUE;
 
@@ -190,7 +217,7 @@ List<T>::List(const List& other) : pool(), first(NULL_VALUE) {
 }
 
 template<typename T>
-List<T>& List<T>::operator=(const List& other) {
+List<T> &List<T>::operator=(const List &other) {
     if (this != &other) {
         while (!isEmpty()) {
             deleteAtTop();
@@ -228,10 +255,13 @@ bool List<T>::isEmpty() const {
     return first == NULL_VALUE;
 }
 
+/* We can replace this method by a data field in the List object
+ * the size can be incremented when we insert and decremented when we delete
+ */
 template<typename T>
 int List<T>::size() const {
     int count = 0, ptr = first;
-    while(ptr != NULL_VALUE) {
+    while (ptr != NULL_VALUE) {
         count++;
         ptr = pool.readPool()[ptr].next;
     }
@@ -239,19 +269,19 @@ int List<T>::size() const {
 }
 
 template<typename T>
-int List<T>::search(const T& item) const {
-    int pos = NULL_VALUE, ptr = first;
-    while(ptr != NULL_VALUE) {
+int List<T>::search(const T &item) const {
+    int ptr = first;
+    while (ptr != NULL_VALUE) {
         if (pool.readPool()[ptr].data == item) {
-            pos = ptr;
+            return ptr;
         }
         ptr = pool.readPool()[ptr].next;
     }
-    return pos;
+    return NULL_VALUE;
 }
 
 template<typename T>
-void List<T>::insertAtEnd(const T& item) {
+void List<T>::insertAtEnd(const T &item) {
     int newNodeIndex = pool.newNode();
     pool.getPool()[newNodeIndex].data = item;
     pool.getPool()[newNodeIndex].next = NULL_VALUE;
@@ -269,17 +299,30 @@ void List<T>::insertAtEnd(const T& item) {
 
 template<typename T>
 void List<T>::deleteAtEnd() {
-    int ptr = first;
-    while(ptr != NULL_VALUE) {
-        if(pool.getPool()[ptr].next == NULL_VALUE) {
-            pool.deleteNode(ptr);
-        }
-        ptr = pool.getPool()[ptr].next;
+    if (isEmpty()) {
+        cerr << "List::deleteAtEnd() on empty list";
+        return;
     }
+
+    if (pool.getPool()[first].next == NULL_VALUE) {
+        pool.deleteNode(first);
+        first = NULL_VALUE;
+        return;
+    }
+
+    int prev = first;
+    int curr = pool.getPool()[first].next;
+
+    while (pool.getPool()[curr].next != NULL_VALUE) {
+        prev = curr;
+        curr = pool.getPool()[curr].next;
+    }
+    pool.getPool()[prev].next = NULL_VALUE;
+    pool.deleteNode(curr);
 }
 
 template<typename T>
-void List<T>::insertAtTop(const T& item) {
+void List<T>::insertAtTop(const T &item) {
     int index = pool.newNode();
     pool.getPool()[index].data = item;
     pool.getPool()[index].next = first;
@@ -296,21 +339,35 @@ void List<T>::deleteAtTop() {
 }
 
 template<typename T>
-void List<T>::insertAfterPos(int pos, const T& item) {
+void List<T>::insertAfterItem(const T &afterItem, const T &newItem) {
     if (isEmpty()) {
-        cerr << "List::insertAfter() on empty list";
+        cerr << "List::insertAfterItem() on empty list";
+        return;
     }
-    if (pos == NULL_VALUE || pos < 0 || pos >= NUM_NODES)
-        cerr << "List::insertAfter invalid position";
-    int index = pool.newNode();
-    pool.getPool()[index].data = item;
-    int nextIndex = pool.getPool()[pos].next;
-    pool.getPool()[pos].next = index;
-    pool.getPool()[index].next = nextIndex;
+
+    int curr = first;
+    while (curr != NULL_VALUE && pool.getPool()[curr].data != afterItem) {
+        curr = pool.getPool()[curr].next;
+    }
+
+    if (curr == NULL_VALUE) {
+        cerr << "List::insertAfterItem() item not found";
+        return;
+    }
+
+    int newNodeIndex = pool.newNode();
+    if (newNodeIndex == NULL_VALUE) {
+        cerr << "List::insertAfterItem() no space in pool";
+        return;
+    }
+
+    pool.getPool()[newNodeIndex].data = newItem;
+    pool.getPool()[newNodeIndex].next = pool.getPool()[curr].next;
+    pool.getPool()[curr].next = newNodeIndex;
 }
 
 template<typename T>
-bool List<T>::deleteItem(const T& item) {
+bool List<T>::deleteItem(const T &item) {
     int prev = NULL_VALUE;
     int curr = first;
 

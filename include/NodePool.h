@@ -38,10 +38,12 @@ struct NodeType {
     T data;
     int next;
 };
+
 template<typename T>
 class NodePool {
 public:
     NodePool();
+
     /*-----------------------------------------------------------------------
     Constructs a NodePool object.
 
@@ -50,6 +52,7 @@ public:
     a free list, and free points to the first node (0).
     -----------------------------------------------------------------------*/
     int newNode();
+
     /*-----------------------------------------------------------------------
     Allocates a node from the free list.
 
@@ -59,6 +62,7 @@ public:
     If no nodes available, outputs error message.
     -----------------------------------------------------------------------*/
     void deleteNode(int index);
+
     /*-----------------------------------------------------------------------
     Returns a node to the free list.
 
@@ -66,14 +70,16 @@ public:
     Postcondition: The node at index is added to beginning of free list.
     If index is invalid, outputs error message.
     -----------------------------------------------------------------------*/
-    NodeType<T>* getPool() ;
+    NodeType<T> *getPool();
+
     /*-----------------------------------------------------------------------
     Provides access to the node array.
 
     Precondition: None.
     Postcondition: Returns pointer to the node array.
     -----------------------------------------------------------------------*/
-    const NodeType<T>* readPool() const;
+    const NodeType<T> *readPool() const;
+
     /*-----------------------------------------------------------------------
     Read Only for the node array.
 
@@ -81,6 +87,7 @@ public:
     Postcondition: Returns pointer to the node array.
     -----------------------------------------------------------------------*/
     int getFree() const;
+
     /*-----------------------------------------------------------------------
     Gets the current free list head.
 
@@ -91,8 +98,10 @@ public:
 private:
     NodeType<T> arrNode[NUM_NODES];
     int free;
+
     void initializePool();
 };
+
 //implementation
 template<typename T>
 NodePool<T>::NodePool() {
@@ -101,7 +110,7 @@ NodePool<T>::NodePool() {
 
 template<typename T>
 void NodePool<T>::initializePool() {
-    for(int i = 0; i < NUM_NODES - 1; i++) {
+    for (int i = 0; i < NUM_NODES - 1; i++) {
         arrNode[i].next = i + 1;
     }
     arrNode[NUM_NODES - 1].next = NULL_VALUE;
@@ -110,7 +119,7 @@ void NodePool<T>::initializePool() {
 
 template<typename T>
 int NodePool<T>::newNode() {
-    if(free == NULL_VALUE) {
+    if (free == NULL_VALUE) {
         cerr << "No available space in the list";
         return NULL_VALUE;
     }
@@ -129,12 +138,12 @@ void NodePool<T>::deleteNode(int index) {
 }
 
 template<typename T>
-NodeType<T>* NodePool<T>::getPool() {
+NodeType<T> *NodePool<T>::getPool() {
     return arrNode;
 }
 
 template<typename T>
-const NodeType<T>* NodePool<T>::readPool() const {
+const NodeType<T> *NodePool<T>::readPool() const {
     return arrNode;
 }
 

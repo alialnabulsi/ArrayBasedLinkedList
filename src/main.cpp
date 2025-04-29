@@ -8,7 +8,7 @@ void showMenu() {
     cout << "\n========== MENU ==========\n";
     cout << "1. Insert at Top\n";
     cout << "2. Insert at End\n";
-    cout << "3. Insert After Position\n";
+    cout << "3. Insert After item\n";
     cout << "4. Delete at Top\n";
     cout << "5. Delete at End\n";
     cout << "6. Delete Item\n";
@@ -24,7 +24,7 @@ void showMenu() {
 }
 
 template<typename T>
-void runListMenu(List<T>& list) {
+void runListMenu(List<T> &list) {
     bool running = true;
 
     while (running) {
@@ -33,79 +33,78 @@ void runListMenu(List<T>& list) {
         cin >> choice;
 
         switch (choice) {
-        case 1: {
-            T value;
-            cout << "Enter value to insert at top: ";
-            cin >> value;
-            list.insertAtTop(value);
-            break;
-        }
-        case 2: {
-            T value;
-            cout << "Enter value to insert at end: ";
-            cin >> value;
-            list.insertAtEnd(value);
-            break;
-        }
-        case 3: {
-            int pos;
-            T value;
-            cout << "Enter position to insert after (index): ";
-            cin >> pos;
-            cout << "Enter value to insert: ";
-            cin >> value;
-            list.insertAfterPos(pos, value);
-            break;
-        }
-        case 4:
-            list.deleteAtTop();
-            break;
-        case 5:
-            list.deleteAtEnd();
-            break;
-        case 6: {
-            T value;
-            cout << "Enter value to delete: ";
-            cin >> value;
-            if (list.deleteItem(value))
-                cout << "Item deleted.\n";
-            else
-                cout << "Item not found.\n";
-            break;
-        }
-        case 7: {
-            T value;
-            cout << "Enter value to search: ";
-            cin >> value;
-            int pos = list.search(value);
-            if (pos != NULL_VALUE)
-                cout << "Item found at index " << pos << ".\n";
-            else
-                cout << "Item not found.\n";
-            break;
-        }
-        case 8:
-            list.display();
-            break;
-        case 9:
-            cout << (list.isSorted() ? "List is sorted.\n" : "List is not sorted.\n");
-            break;
-        case 10:
-            list.sortList();
-            cout << "List sorted.\n";
-            break;
-        case 11:
-            cout << "List size: " << list.size() << endl;
-            break;
-        case 12:
-            cout << "Free list head index: " << list.getFree() << endl;
-            break;
-        case 0:
-            running = false;
-            cout << "Exiting program.\n";
-            break;
-        default:
-            cout << "Invalid option. Please try again.\n";
+            case 1: {
+                T value;
+                cout << "Enter value to insert at top: ";
+                cin >> value;
+                list.insertAtTop(value);
+                break;
+            }
+            case 2: {
+                T value;
+                cout << "Enter value to insert at end: ";
+                cin >> value;
+                list.insertAtEnd(value);
+                break;
+            }
+            case 3: {
+                T afterValue, newValue;
+                cout << "Enter existing item to insert after: ";
+                cin >> afterValue;
+                cout << "Enter new value to insert: ";
+                cin >> newValue;
+                list.insertAfterItem(afterValue, newValue);
+                break;
+            }
+            case 4:
+                list.deleteAtTop();
+                break;
+            case 5:
+                list.deleteAtEnd();
+                break;
+            case 6: {
+                T value;
+                cout << "Enter value to delete: ";
+                cin >> value;
+                if (list.deleteItem(value))
+                    cout << "Item deleted.\n";
+                else
+                    cout << "Item not found.\n";
+                break;
+            }
+            case 7: {
+                T value;
+                cout << "Enter value to search: ";
+                cin >> value;
+                int pos = list.search(value);
+                if (pos != NULL_VALUE)
+                    cout << "Item found at index " << pos << ".\n";
+                else
+                    cout << "Item not found.\n";
+                break;
+            }
+            case 8:
+                list.display();
+                break;
+            case 9:
+                cout << (list.isSorted() ? "List is sorted.\n" : "List is not sorted.\n");
+                break;
+            case 10:
+                list.sortList();
+                cout << "List sorted.\n";
+                break;
+            case 11:
+                cout << "List size: " << list.size() << endl;
+                break;
+            case 12:
+                cout << "Free list head index: " << list.getFree() << endl;
+                break;
+            case 0:
+                running = false;
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid option. Please try again.\n";
         }
     }
 }
@@ -123,24 +122,24 @@ int main() {
     cin >> typeChoice;
 
     switch (typeChoice) {
-    case 1: {
-        List<int> intList;
-        runListMenu(intList);
-        break;
-    }
-    case 2: {
-        List<double> doubleList;
-        runListMenu(doubleList);
-        break;
-    }
-    case 3: {
-        List<string> stringList;
-        runListMenu(stringList);
-        break;
-    }
-    default:
-        cout << "Invalid data type choice.\n";
-        break;
+        case 1: {
+            List<int> intList;
+            runListMenu(intList);
+            break;
+        }
+        case 2: {
+            List<double> doubleList;
+            runListMenu(doubleList);
+            break;
+        }
+        case 3: {
+            List<string> stringList;
+            runListMenu(stringList);
+            break;
+        }
+        default:
+            cout << "Invalid data type choice.\n";
+            break;
     }
 
     return 0;
